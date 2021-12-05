@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "108387160741",
+    "project_id": "sithiwiliapp",
+    "storage_bucket": "sithiwiliapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:108387160741:android:731cb6d9df58dab68f334c",
+        "android_client_info": {
+          "package_name": "com.example.sithuwili"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "108387160741-dmfb7knf2259p8j5j0ngvde1grgmpemq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sithuwili",
+            "certificate_hash": "30b52ecee3310a3184cfa78b4d813a620659ff52"
+          }
+        },
+        {
+          "client_id": "108387160741-etl8rmo1pis6u9n1ahuk83frtv9mj9o6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2MeHHVzhs2cf0sGsi-Ry_JBf8fUWfFR4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "108387160741-etl8rmo1pis6u9n1ahuk83frtv9mj9o6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
