@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myfirstapp/src/res/custom_colors.dart';
+import 'package:myfirstapp/src/screens/add_screen.dart';
 import 'package:myfirstapp/src/screens/sign_in_screen.dart';
 import 'package:myfirstapp/src/utils/auth.dart';
 import 'package:myfirstapp/src/widgets/app_bar_title.dart';
+import 'package:myfirstapp/src/widgets/item_list.dart';
 
 class UserInfoScreen extends StatefulWidget {
   const UserInfoScreen({Key? key, required User user})
@@ -19,6 +21,12 @@ class UserInfoScreen extends StatefulWidget {
 class _UserInfoScreenState extends State<UserInfoScreen> {
   late User _user;
   bool _isSigningOut = false;
+
+  final String time = DateTime.now().toString().substring(0, 4);
+
+  final FocusNode _nameFocusNode = FocusNode();
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
 
   Drawer _buildDrawer(BuildContext context) {
     return Drawer(
@@ -168,17 +176,24 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
         elevation: 0,
         backgroundColor: CustomColors.firebaseNavy,
         title: AppBarTitle(),
+        centerTitle: true,
         // leading: IconButton(
         //   icon: const Icon(Icons.menu),
         //   onPressed: () => {_buildDrawer(context)},
         // ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.add),
-          )
-        ],
       ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        backgroundColor: CustomColors.firebaseOrange,
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => AddScreen(user: _user),
+            ),
+          );
+        },
+      ),
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       drawer: _buildDrawer(context),
       body: SafeArea(
         child: Padding(
@@ -187,41 +202,14 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             right: 16.0,
             bottom: 20.0,
           ),
-          child: Card(
-            margin: EdgeInsets.fromLTRB(20, 100, 20, 300),
-            color: Colors.grey,
-            shadowColor: Colors.red,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Hello 👋',
-                  style: TextStyle(
-                    color: CustomColors.firebaseGrey,
-                    fontSize: 26,
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                Text(
-                  "Have a great day!",
-                  style: TextStyle(
-                    color: CustomColors.firebaseOrange,
-                    fontSize: 20,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                const SizedBox(height: 24.0),
-                Text(
-                  'You are now signed in using your Google account. To sign out of your account click the "Sign Out" button below.',
-                  style: TextStyle(
-                      color: CustomColors.firebaseGrey.withOpacity(0.8),
-                      fontSize: 14,
-                      letterSpacing: 0.2),
-                ),
-                const SizedBox(height: 16.0),
-              ],
-            ),
-          ),
+          child: ItemList(),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(left: 90, bottom: 5),
+        child: Text(
+          "Copyright " + time + " ©️" + " අමායා™️ Inc.",
+          style: TextStyle(color: CustomColors.firebaseOrange),
         ),
       ),
     );

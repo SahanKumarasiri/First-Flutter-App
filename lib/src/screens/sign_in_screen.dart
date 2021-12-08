@@ -36,7 +36,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       flex: 1,
                       child: Image.asset(
                         'assets/firebase_logo.png',
-                        height: 300,
+                        height: 350,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -72,7 +72,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         'Powered by Amaya',
                         style: TextStyle(
                           color: Colors.white70,
-                          fontSize: 20,
+                          fontSize: 15,
                         ),
                       ),
                     ),
