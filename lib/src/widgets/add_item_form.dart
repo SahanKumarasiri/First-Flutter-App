@@ -81,7 +81,7 @@ class _AddItemFormState extends State<AddItemForm> {
                 ),
                 const SizedBox(height: 24.0),
                 Text(
-                  'Description',
+                  'Feeling',
                   style: TextStyle(
                     color: CustomColors.firebaseGrey,
                     fontSize: 22.0,
@@ -100,7 +100,7 @@ class _AddItemFormState extends State<AddItemForm> {
                   validator: (value) => Validator.validateField(
                     value: value,
                   ),
-                  label: 'Description',
+                  label: 'Feeling',
                   hint: 'Enter your feeling',
                 ),
               ],
@@ -122,7 +122,7 @@ class _AddItemFormState extends State<AddItemForm> {
                     ),
                     shape: MaterialStateProperty.all(
                       RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(45),
                       ),
                     ),
                   ),
@@ -150,7 +150,7 @@ class _AddItemFormState extends State<AddItemForm> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
                     child: Text(
-                      'ADD ITEM',
+                      '🤍 Post Feeling',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,

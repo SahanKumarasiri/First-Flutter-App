@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myfirstapp/src/res/custom_colors.dart';
-import 'package:myfirstapp/src/utils/auth.dart';
 import 'package:myfirstapp/src/widgets/add_item_form.dart';
 import 'package:myfirstapp/src/widgets/app_bar_title.dart';
 

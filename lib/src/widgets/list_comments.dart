@@ -1,32 +1,30 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myfirstapp/src/res/custom_colors.dart';
-import 'package:myfirstapp/src/screens/display_all.dart';
 import 'package:myfirstapp/src/utils/database.dart';
 
-class ItemList extends StatefulWidget {
-  const ItemList({required User user}) : _user = user;
-  final User _user;
+class ItemListComment extends StatefulWidget {
+  const ItemListComment({required this.title});
+  final String title;
   @override
-  State<ItemList> createState() => _ItemListState();
+  State<ItemListComment> createState() => _ItemListCommentState();
 }
 
-class _ItemListState extends State<ItemList> {
-  late User _user;
-
-  @override
-  void initState() {
-    _user = widget._user;
-    super.initState();
-  }
-
+class _ItemListCommentState extends State<ItemListComment> {
+  //ADDED
+  var colors = [
+    Colors.red,
+    Colors.blue,
+    Colors.cyan,
+    Colors.green,
+    Colors.yellow,
+  ];
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Database.readItems(),
+      stream: Database.readComments(widget.title),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return const Text('Something went wrong');
@@ -34,7 +32,7 @@ class _ItemListState extends State<ItemList> {
           if (snapshot.data!.docs.isEmpty) {
             return Center(
               child: Text(
-                "No posts yet",
+                "No comments yet",
                 style: TextStyle(color: CustomColors.firebaseGrey),
               ),
             );
@@ -44,63 +42,44 @@ class _ItemListState extends State<ItemList> {
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               var noteInfo = snapshot.data!.docs[index].data() as dynamic;
-              String docID = snapshot.data!.docs[index].id;
-              String title = noteInfo["title"];
-              String description = noteInfo['description'];
-              String user = noteInfo['user'];
+              String user = noteInfo["user"];
+              String comment = noteInfo['comment'];
               String time = noteInfo['time'];
-              int likes = noteInfo['likes'];
 
               return Ink(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: colors[index],
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: ListTile(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => DisplayAllScreen(
-                        currentTitle: title,
-                        currentDescription: description,
-                        documentId: docID,
-                        name: user,
-                        time: time,
-                        user: _user,
-                        likes: likes,
-                      ),
-                    ),
-                  ),
                   title: Text(
-                    title,
+                    user + " says :",
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: CustomColors.firebaseGrey),
                   ),
                   subtitle: Column(
                     children: [
                       Text(
-                        description,
+                        comment,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
                       ),
                       const Text(""),
                       Text(
-                        user +
-                            " : " +
-                            time.substring(0, 20) +
-                            " ❤️ " +
-                            likes.toString(),
+                        time.substring(0, 20),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(fontSize: 10),
                       ),
                     ],
-                  ),
-                  trailing: const Padding(
-                    padding: EdgeInsets.only(top: 5),
-                    child: Icon(Icons.arrow_forward_ios_sharp),
                   ),
                 ),
               );

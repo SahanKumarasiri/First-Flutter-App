@@ -6,6 +6,7 @@ import 'package:myfirstapp/src/screens/sign_in_screen.dart';
 import 'package:myfirstapp/src/utils/auth.dart';
 import 'package:myfirstapp/src/widgets/app_bar_title.dart';
 import 'package:myfirstapp/src/widgets/item_list.dart';
+import 'package:myfirstapp/src/widgets/search_input_widget.dart';
 
 class UserInfoScreen extends StatefulWidget {
   const UserInfoScreen({Key? key, required User user})
@@ -31,7 +32,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
   Drawer _buildDrawer(BuildContext context) {
     return Drawer(
       child: Container(
-        color: Colors.black,
+        color: CustomColors.firebaseNavy,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -41,12 +42,12 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                     padding: const EdgeInsets.only(top: 40),
                     child: ClipOval(
                       child: Material(
-                        color: Colors.black,
+                        color: CustomColors.firebaseNavy,
                         child: Image.network(
                           _user.photoURL!,
                           fit: BoxFit.fitHeight,
-                          width: 200,
-                          height: 200,
+                          width: 100,
+                          height: 100,
                         ),
                       ),
                     ),
@@ -67,7 +68,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             const SizedBox(height: 16.0),
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.only(left: 10, bottom: 50),
                 child: Text(
                   _user.displayName!,
                   style: const TextStyle(
@@ -77,21 +78,60 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                 ),
               ),
             ),
+            SearchInputWidget(),
             const SizedBox(height: 8.0),
-            ListTile(
-              tileColor: Colors.white,
-              leading: const Icon(
-                Icons.house,
-                color: Colors.white,
-              ),
-              title: const Text(
-                'Houses',
-                style: TextStyle(
-                  fontSize: 24.0,
+            Card(
+              color: CustomColors.firebaseOrange,
+              child: ListTile(
+                leading: const Icon(
+                  Icons.account_box_outlined,
                   color: Colors.white,
                 ),
+                trailing: const Icon(Icons.arrow_forward_ios_outlined),
+                title: const Text(
+                  'Account',
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {},
+                subtitle: Text(
+                  "See your posts | Manage your preferences",
+                  style: TextStyle(color: CustomColors.firebaseGrey),
+                ),
               ),
-              onTap: () {},
+            ),
+            Card(
+              color: Colors.lightGreen,
+              child: ListTile(
+                leading: const Icon(
+                  Icons.credit_score_outlined,
+                  color: Colors.white,
+                ),
+                trailing: const Icon(Icons.arrow_forward_ios_outlined),
+                title: const Text(
+                  'Credits',
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {},
+                subtitle: Text(
+                  "About US | Technologies",
+                  style: TextStyle(color: CustomColors.firebaseGrey),
+                ),
+              ),
+            ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 50),
+                child: Text(
+                  "v2.0",
+                  style: TextStyle(color: CustomColors.firebaseGrey),
+                ),
+              ),
             ),
             _isSigningOut
                 ? const CircularProgressIndicator(
@@ -99,7 +139,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                   )
                 : Padding(
                     padding:
-                        const EdgeInsets.only(left: 70, right: 70, top: 320),
+                        const EdgeInsets.only(left: 70, right: 70, top: 180),
                     child: ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
@@ -123,9 +163,9 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                             .pushReplacement(_routeToSignInScreen());
                       },
                       child: const Padding(
-                        padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                        padding: EdgeInsets.only(top: 5.0, bottom: 8.0),
                         child: Text(
-                          'Sign Out',
+                          '🏃‍♂️ Sign Out',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -202,7 +242,9 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             right: 16.0,
             bottom: 20.0,
           ),
-          child: ItemList(),
+          child: ItemList(
+            user: _user,
+          ),
         ),
       ),
       bottomNavigationBar: Padding(

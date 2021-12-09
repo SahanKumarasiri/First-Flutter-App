@@ -15,7 +15,8 @@ class Database {
       "title": title,
       "description": description,
       "user": user,
-      "time": time
+      "time": time,
+      "likes": 0
     };
 
     await documentReferencer
@@ -43,8 +44,47 @@ class Database {
         .catchError((e) => print(e));
   }
 
+  static Future<void> updateLikes({
+    required int likes,
+    required String docId,
+  }) async {
+    int increment = 1 + likes;
+
+    DocumentReference documentReferencer =
+        _firestore.collection('items').doc(docId);
+
+    Map<String, dynamic> data = <String, dynamic>{
+      "likes": increment,
+    };
+
+    await documentReferencer
+        .update(data)
+        .whenComplete(() => print("Note item updated in the database"))
+        .catchError((e) => print(e));
+  }
+
+  static Future<void> decrementLikes({
+    required int likes,
+    required String docId,
+  }) async {
+    int increment = likes - 1;
+
+    DocumentReference documentReferencer =
+        _firestore.collection('items').doc(docId);
+
+    Map<String, dynamic> data = <String, dynamic>{
+      "likes": increment,
+    };
+
+    await documentReferencer
+        .update(data)
+        .whenComplete(() => print("Note item updated in the database"))
+        .catchError((e) => print(e));
+  }
+
   static Stream<QuerySnapshot> readItems() {
-    CollectionReference notesItemCollection = _firestore.collection('items');
+    Query<Map<String, dynamic>> notesItemCollection =
+        _firestore.collection('items').orderBy("time", descending: true);
     print('fetched');
 
     return notesItemCollection.snapshots();
@@ -60,5 +100,36 @@ class Database {
         .delete()
         .whenComplete(() => print('Note item deleted from the database'))
         .catchError((e) => print(e));
+  }
+
+//-----------------------------------Comments------------------------------------------------------
+  static Future<void> addComment(
+      {required String comment,
+      required String user,
+      required String title}) async {
+    DocumentReference documentReferencer =
+        _firestore.collection('comments').doc();
+
+    Map<String, dynamic> data = <String, dynamic>{
+      "user": user,
+      "comment": comment,
+      "time": time,
+      "title": title
+    };
+
+    await documentReferencer
+        .set(data)
+        .whenComplete(() => print("Note item added to the database"))
+        .catchError((e) => print(e));
+  }
+
+  static Stream<QuerySnapshot> readComments(param) {
+    Query<Map<String, dynamic>> notesItemCollection = _firestore
+        .collection('comments')
+        .where("title", isEqualTo: param)
+        .orderBy("time", descending: true);
+    print('fetched');
+
+    return notesItemCollection.snapshots();
   }
 }
