@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:myfirstapp/src/res/custom_colors.dart';
 import 'package:myfirstapp/src/utils/database.dart';
-import 'package:myfirstapp/src/widgets/app_bar_title.dart';
-import 'package:myfirstapp/src/widgets/edit_item_form.dart';
+import 'package:myfirstapp/src/widgets/edit_comment_form.dart';
 
-class EditScreen extends StatefulWidget {
+class EditCommentScreen extends StatefulWidget {
   final String currentTitle;
-  final String currentDescription;
+  final String comment;
   final String documentId;
   final String user;
 
   // ignore: use_key_in_widget_constructors
-  const EditScreen(
+  const EditCommentScreen(
       {required this.currentTitle,
-      required this.currentDescription,
+      required this.comment,
       required this.documentId,
       required this.user});
 
   @override
-  _EditScreenState createState() => _EditScreenState();
+  _EditCommentScreenState createState() => _EditCommentScreenState();
 }
 
-class _EditScreenState extends State<EditScreen> {
+class _EditCommentScreenState extends State<EditCommentScreen> {
   final FocusNode _titleFocusNode = FocusNode();
 
   final FocusNode _descriptionFocusNode = FocusNode();
@@ -53,7 +52,7 @@ class _EditScreenState extends State<EditScreen> {
                 ),
               ),
               Text(
-                ' Feelings ',
+                ' Comments ',
                 style: TextStyle(
                   color: CustomColors.firebaseOrange,
                   fontSize: 18,
@@ -88,7 +87,7 @@ class _EditScreenState extends State<EditScreen> {
                         _isDeleting = true;
                       });
 
-                      await Database.deleteItem(
+                      await Database.deleteComment(
                         docId: widget.documentId,
                       );
 
@@ -108,12 +107,12 @@ class _EditScreenState extends State<EditScreen> {
               right: 16.0,
               bottom: 20.0,
             ),
-            child: EditItemForm(
+            child: EditCommentForm(
               documentId: widget.documentId,
               titleFocusNode: _titleFocusNode,
               descriptionFocusNode: _descriptionFocusNode,
               currentTitle: widget.currentTitle,
-              currentDescription: widget.currentDescription,
+              comment: widget.comment,
             ),
           ),
         ),

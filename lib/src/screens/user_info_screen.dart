@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myfirstapp/src/res/custom_colors.dart';
 import 'package:myfirstapp/src/screens/add_screen.dart';
+import 'package:myfirstapp/src/screens/credits_screen.dart';
+import 'package:myfirstapp/src/screens/private_screen.dart';
 import 'package:myfirstapp/src/screens/sign_in_screen.dart';
 import 'package:myfirstapp/src/utils/auth.dart';
 import 'package:myfirstapp/src/widgets/app_bar_title.dart';
@@ -78,7 +80,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                 ),
               ),
             ),
-            SearchInputWidget(),
+            SearchInputWidget(user: _user),
             const SizedBox(height: 8.0),
             Card(
               color: CustomColors.firebaseOrange,
@@ -95,7 +97,11 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                     color: Colors.white,
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => PrivateScreen(user: _user),
+                  ));
+                },
                 subtitle: Text(
                   "See your posts | Manage your preferences",
                   style: TextStyle(color: CustomColors.firebaseGrey),
@@ -117,7 +123,10 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                     color: Colors.white,
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const CreditsScreen()));
+                },
                 subtitle: Text(
                   "About US | Technologies",
                   style: TextStyle(color: CustomColors.firebaseGrey),

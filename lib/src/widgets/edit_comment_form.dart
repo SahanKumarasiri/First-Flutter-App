@@ -5,27 +5,27 @@ import 'package:myfirstapp/src/utils/validator.dart';
 
 import 'custom_form_field.dart';
 
-class EditItemForm extends StatefulWidget {
+class EditCommentForm extends StatefulWidget {
   final FocusNode titleFocusNode;
   final FocusNode descriptionFocusNode;
   final String currentTitle;
-  final String currentDescription;
+  final String comment;
   final String documentId;
 
-  const EditItemForm({
+  const EditCommentForm({
     required this.titleFocusNode,
     required this.descriptionFocusNode,
     required this.currentTitle,
-    required this.currentDescription,
+    required this.comment,
     required this.documentId,
   });
 
   @override
-  _EditItemFormState createState() => _EditItemFormState();
+  _EditCommentFormState createState() => _EditCommentFormState();
 }
 
-class _EditItemFormState extends State<EditItemForm> {
-  final _editItemFormKey = GlobalKey<FormState>();
+class _EditCommentFormState extends State<EditCommentForm> {
+  final _EditCommentFormKey = GlobalKey<FormState>();
 
   bool _isProcessing = false;
 
@@ -39,7 +39,7 @@ class _EditItemFormState extends State<EditItemForm> {
     );
 
     _descriptionController = TextEditingController(
-      text: widget.currentDescription,
+      text: widget.comment,
     );
     super.initState();
   }
@@ -47,7 +47,7 @@ class _EditItemFormState extends State<EditItemForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _editItemFormKey,
+      key: _EditCommentFormKey,
       child: ListView(
         children: [
           Padding(
@@ -70,21 +70,19 @@ class _EditItemFormState extends State<EditItemForm> {
                   ),
                 ),
                 const SizedBox(height: 8.0),
-                CustomFormField(
-                  isLabelEnabled: false,
+                TextFormField(
                   controller: _titleController,
                   focusNode: widget.titleFocusNode,
                   keyboardType: TextInputType.text,
-                  inputAction: TextInputAction.next,
-                  validator: (value) => Validator.validateField(
-                    value: value,
+                  enabled: false,
+                  readOnly: true,
+                  style: const TextStyle(
+                    color: Colors.white,
                   ),
-                  label: 'Title',
-                  hint: 'Enter your note title',
                 ),
                 const SizedBox(height: 24.0),
                 Text(
-                  'Description',
+                  'Comment',
                   style: TextStyle(
                     color: CustomColors.firebaseGrey,
                     fontSize: 22.0,
@@ -103,7 +101,7 @@ class _EditItemFormState extends State<EditItemForm> {
                   validator: (value) => Validator.validateField(
                     value: value,
                   ),
-                  label: 'Description',
+                  label: 'Comment',
                   hint: 'Enter your note description',
                 ),
               ],
@@ -139,15 +137,14 @@ class _EditItemFormState extends State<EditItemForm> {
                       widget.titleFocusNode.unfocus();
                       widget.descriptionFocusNode.unfocus();
 
-                      if (_editItemFormKey.currentState!.validate()) {
+                      if (_EditCommentFormKey.currentState!.validate()) {
                         setState(() {
                           _isProcessing = true;
                         });
 
-                        await Database.updateItem(
+                        await Database.updateComments(
                           docId: widget.documentId,
-                          title: _titleController.text,
-                          description: _descriptionController.text,
+                          comment: _descriptionController.text,
                         );
 
                         setState(() {
@@ -160,7 +157,7 @@ class _EditItemFormState extends State<EditItemForm> {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
                       child: Text(
-                        'Update Feeling',
+                        'Update Comment',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,

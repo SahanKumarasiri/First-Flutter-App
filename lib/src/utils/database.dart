@@ -132,4 +132,64 @@ class Database {
 
     return notesItemCollection.snapshots();
   }
+
+//-----------------------------------Private------------------------------------------------------
+  static Stream<QuerySnapshot> readPrivateItems(param) {
+    Query<Map<String, dynamic>> notesItemCollection = _firestore
+        .collection('items')
+        .where("user", isEqualTo: param)
+        .orderBy("time", descending: true);
+    print('fetched');
+
+    return notesItemCollection.snapshots();
+  }
+
+  static Future<void> updateComments({
+    required String comment,
+    required String docId,
+  }) async {
+    DocumentReference documentReferencer =
+        _firestore.collection('comments').doc(docId);
+
+    Map<String, dynamic> data = <String, dynamic>{
+      "comment": comment,
+    };
+
+    await documentReferencer
+        .update(data)
+        .whenComplete(() => print("Note comment updated in the database"))
+        .catchError((e) => print(e));
+  }
+
+  static Stream<QuerySnapshot> readPrivateComments(param) {
+    Query<Map<String, dynamic>> notesItemCollection = _firestore
+        .collection('comments')
+        .where("user", isEqualTo: param)
+        .orderBy("time", descending: true);
+    print('fetched');
+
+    return notesItemCollection.snapshots();
+  }
+
+  static Future<void> deleteComment({
+    required String docId,
+  }) async {
+    DocumentReference documentReferencer =
+        _firestore.collection('comments').doc(docId);
+
+    await documentReferencer
+        .delete()
+        .whenComplete(() => print('Note comment deleted from the database'))
+        .catchError((e) => print(e));
+  }
+
+  static Stream<QuerySnapshot> searchItem(param) {
+    Query<Map<String, dynamic>> notesItemCollection = _firestore
+        .collection('items')
+        .where("user", isEqualTo: param)
+        .orderBy("time", descending: true);
+    print('fetched');
+
+    return notesItemCollection.snapshots();
+  }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:myfirstapp/src/res/custom_colors.dart';
 import 'package:myfirstapp/src/screens/comment_screen.dart';
 import 'package:myfirstapp/src/utils/database.dart';
+import 'package:myfirstapp/src/utils/validator.dart';
 
 // ignore: duplicate_ignore
 class TextInputWidget extends StatefulWidget {
@@ -35,11 +36,14 @@ class _TextInputWidgetState extends State<TextInputWidget> {
   Widget build(BuildContext context) {
     return Form(
       key: _addItemFormKey,
-      child: TextField(
+      child: TextFormField(
           controller: _commentController,
           style: TextStyle(
             color: CustomColors.firebaseYellow,
           ),
+          validator: (value) => Validator.validateField(
+                value: _commentController.text,
+              ),
           // controller: controller,
           decoration: InputDecoration(
               prefixIcon: const Icon(Icons.message),
@@ -52,17 +56,17 @@ class _TextInputWidgetState extends State<TextInputWidget> {
                 splashColor: Colors.blue,
                 tooltip: "Post comment",
                 onPressed: () async {
-                  await Database.addComment(
-                      user: _user.displayName.toString(),
-                      comment: _commentController.text,
-                      title: widget.title);
-                  _commentController.clear();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
+                  if (_addItemFormKey.currentState!.validate()) {
+                    await Database.addComment(
+                        user: _user.displayName.toString(),
+                        comment: _commentController.text,
+                        title: widget.title);
+                    _commentController.clear();
+                    Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) =>
                           CommentScreen(comment: widget.title),
-                    ),
-                  );
+                    ));
+                  }
                 },
               ))),
     );
